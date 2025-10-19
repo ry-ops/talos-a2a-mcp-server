@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  talos-mcp-server:
+    build: .
+    container_name: talos-mcp-server
+    volumes:
+      # Mount your talosconfig file
+      - ~/.talos/config:/home/talos/.talos/config:ro
+      # Mount source code for development
+      - ./src:/app/src
+    environment:
+      - TALOSCONFIG=/home/talos/.talos/config
+      - LOG_LEVEL=INFO
+    stdin_open: true
+    tty: true
+    # If you need to expose the server on a network port
+    # ports:
+    #   - "3000:3000"
+    networks:
+      - talos-network
+
+  # Example: Add a development container with tools
+  dev-tools:
+    image: python:3.12-slim
+    container_name: talos-dev-tools
+    volumes:
+      - .:/workspace
+      - ~/.talos/config:/root/.talos/config:ro
+    working_dir: /workspace
+    environment:
+      - TALOSCONFIG=/root/.talos/config
+    command: sleep infinity
+    networks:
+      - talos-network
+
+networks:
+  talos-network:
+    driver: bridge

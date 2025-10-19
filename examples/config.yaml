@@ -1,0 +1,54 @@
+# Example Talos Configuration
+# This file shows the structure of a talosconfig file
+# Replace the values with your actual cluster information
+
+context: my-cluster
+
+contexts:
+  my-cluster:
+    # Cluster endpoints - control plane nodes
+    endpoints:
+      - 192.168.1.10:50000
+      - 192.168.1.11:50000
+      - 192.168.1.12:50000
+    
+    # CA certificate (base64 encoded)
+    # Generate: base64 -w 0 < ca.crt
+    ca: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0t...
+    
+    # Client certificate (base64 encoded)
+    # Generate: base64 -w 0 < client.crt
+    crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0t...
+    
+    # Client key (base64 encoded)
+    # Generate: base64 -w 0 < client.key
+    key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVkt...
+
+# You can have multiple contexts for different clusters
+# contexts:
+#   production:
+#     endpoints:
+#       - prod-cp-1.example.com:50000
+#     ca: ...
+#     crt: ...
+#     key: ...
+#   
+#   staging:
+#     endpoints:
+#       - staging-cp-1.example.com:50000
+#     ca: ...
+#     crt: ...
+#     key: ...
+
+# To generate a new talosconfig:
+# 1. Use talosctl to generate secrets:
+#    talosctl gen secrets
+#
+# 2. Generate config:
+#    talosctl gen config my-cluster https://cluster-endpoint:6443
+#
+# 3. Extract talosconfig:
+#    The talosconfig file will be generated in the current directory
+#
+# For existing clusters:
+#    talosctl config merge <path-to-talosconfig>
